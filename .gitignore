@@ -1,3 +1,7 @@
+# Configuration files
+.deployrc
+.deployrc.json
+
 # Logs
 logs
 *.log

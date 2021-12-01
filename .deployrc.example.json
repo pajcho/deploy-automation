@@ -1,0 +1,22 @@
+{
+  "connections": {
+    "bitbucket": {
+      "workspace": "WORKSPACE",
+      "username": "USERNAME",
+      "password": "PASSWORD"
+    }
+  },
+  "applications": [
+    {
+      "title": "TITLE",
+      "value": "REPOSITORY_NAME",
+      "workspace": "WORKSPACE",
+      "mainBranch": "MAIN",
+      "developmentBranch": "DEVELOP"
+    }
+  ],
+  "tenants": [
+    { "title": "TITLE", "value": "VALUE" }
+  ]
+}
+
