@@ -1,7 +1,3 @@
-### TODOs
-
-- Switch prompts to https://github.com/SBoudrias/Inquirer.js
-
 ### Create pull request
 
 ```
