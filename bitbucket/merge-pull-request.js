@@ -31,7 +31,12 @@ export async function mergePullRequest(pullRequestData, credentials) {
   }
 
   if (response?.status === 200) {
-    const pullRequest = { id: response.data.id, title: response.data.title, link: response.data.links.self };
+    const pullRequest = {
+      id: response.data.id,
+      title: response.data.title,
+      link: response.data.links.self,
+      hash: response.data.merge_commit.hash,
+    };
 
     console.log(chalk.green(`  › Pull request #${pullRequestData.id} (${pullRequestData.title}) merged!`));
 

@@ -10,6 +10,7 @@ import { deleteBranch } from './bitbucket/delete-branch.js';
 import { createPullRequest } from './bitbucket/create-pull-request.js';
 import { approvePullRequest } from './bitbucket/approve-pull-request.js';
 import { mergePullRequest } from './bitbucket/merge-pull-request.js';
+import {createTag} from "./bitbucket/create-tag.js";
 
 async function deployRepository(username, password, settings) {
   let currentVersion;
@@ -66,7 +67,6 @@ async function deployRepository(username, password, settings) {
       choices: (prev) => {
         return ['new-release-branch', 'new-hotfix-branch', 'sync-with-existing-release'].includes(prev) ? settings.tenants : [];
       },
-      min: 1,
     },
     {
       // TODO: We will deploy one app at a time in the future so there will be no need to do values.applications[0]
@@ -272,15 +272,18 @@ async function deployRepository(username, password, settings) {
               { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
               { username, password }
           );
-          await mergePullRequest(
+          const mergedPullRequest = await mergePullRequest(
               { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
               { username, password }
           );
           
-          // TODO: Tag a version on the merge commit
+          // ## Create a version tag on the merge commit
+          await createTag(
+              { workspace: workspace(application), repo: application, hash: mergedPullRequest.hash, name: version },
+              { username, password }
+          );
           
           if(syncBackToDevelopment) {
-            // TODO: Create a PR to sync back to development branch
             console.log(chalk.magenta(`\n› Syncing version ${version} back to ${developmentBranch(application)} on ${application}`));
             console.log(chalk.gray(`--------------------------------------------------------`));
   
@@ -318,7 +321,7 @@ async function deployRepository(username, password, settings) {
       }
     }
 
-    console.log(chalk.green(`\n✔ All tenants are deployed!!\n\n`));
+    console.log(chalk.green(`\n✔ All applications are deployed!!\n\n`));
   }
 }
 
