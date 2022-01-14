@@ -2,6 +2,9 @@
 .deployrc
 .deployrc.json
 
+# Build directory
+dist/
+
 # Logs
 logs
 *.log

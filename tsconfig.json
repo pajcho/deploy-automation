@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+    /* Basic Options */
+    "target": "es2020",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "declaration": false,
+    "outDir": "./dist",
+    "importHelpers": true,
+    "downlevelIteration": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true,
+
+    /* Advanced Options */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": []
+}

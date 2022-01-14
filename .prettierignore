@@ -1,0 +1,11 @@
+__mocks__
+./config
+.idea
+.vscode
+coverage
+dist
+node_modules
+package-lock.json
+tmp
+yarn-error.log
+yarn.lock

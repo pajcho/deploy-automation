@@ -15,8 +15,5 @@
       "developmentBranch": "DEVELOP"
     }
   ],
-  "tenants": [
-    { "title": "TITLE", "value": "VALUE" }
-  ]
+  "tenants": [{ "title": "TITLE", "value": "VALUE" }]
 }
-

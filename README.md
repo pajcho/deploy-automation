@@ -1,9 +1,11 @@
 # Deploy automation
+
 Set of commands to allow for easy and automated project deployments using Bitbucket APIs
 
-# Features 
+# Features
 
 #### Staging
+
 - Create a release branch + tenant branches
   - Create a release branch from `master`
   - Create pull request and merge `development` into the release branch
@@ -14,7 +16,7 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 - Sync all tenant branches with the release branch
   - Check if tenant branches exist and create a branch if needed
   - Sync all tenant branches with the release branch if needed
-    
+
 #### Production
 
 - Release a branch to production
@@ -25,8 +27,9 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 # Todo
 
 #### Functional improvements
+
 - [ ] Better branch creation
-  - [ ] Detect is branch we are trying to create exists and either skip the step or recreate the branch from scratch 
+  - [ ] Detect is branch we are trying to create exists and either skip the step or recreate the branch from scratch
   - [ ] Sync branches only when needed _(When running same commands again and again, only sync branches if there are new changes, skip otherwise)_
 - [ ] Better version suggestions
   - [ ] Fetch version files directly from release branch _(When creating tenant branches, instead of re-fetching version files (Netlify.toml and package.json) from master branch, fetch version from the release branch and do search and replace)_
@@ -34,6 +37,7 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
   - [ ] When doing the release to production or sync tenant branches try to get the latest release branches and their versions
 
 #### Code improvements
+
 - [ ] Switch prompts to https://github.com/SBoudrias/Inquirer.js
 - [ ] Migrate to Typescript
 - [ ] Group functions into classes
