@@ -33,9 +33,9 @@ export async function connectBitbucket() {
     if (username && password) {
       settings.connections = {
         ...settings.connections,
-        bitbucket: { username, password }
+        bitbucket: { username, password },
       };
-      
+
       // Save credentials in the .deployrc file in this format username:password
       runCommand(`echo '${JSON.stringify(settings, null, 2)}' > .deployrc.json`);
 

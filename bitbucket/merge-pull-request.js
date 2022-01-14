@@ -14,11 +14,7 @@ export async function mergePullRequest(pullRequestData, credentials) {
   const response = await client.post(`pullrequests/${pullRequestData.id}/merge`).catch((error) => {
     if (error.response) {
       if (error.response.status === 555) {
-        console.log(
-          chalk.red(
-            '  › The merge took too long and timed out. In this case the caller should retry the request later!'
-          )
-        );
+        console.log(chalk.red('  › The merge took too long and timed out. In this case the caller should retry the request later!'));
       } else {
         console.log(chalk.red(`  › Unhandled Exception: Bitbucket responded with a status ${error.response.status}!`));
       }

@@ -10,19 +10,19 @@ import { deleteBranch } from './bitbucket/delete-branch.js';
 import { createPullRequest } from './bitbucket/create-pull-request.js';
 import { approvePullRequest } from './bitbucket/approve-pull-request.js';
 import { mergePullRequest } from './bitbucket/merge-pull-request.js';
-import {createTag} from "./bitbucket/create-tag.js";
+import { createTag } from './bitbucket/create-tag.js';
 
 async function deployRepository(username, password, settings) {
   let currentVersion;
-  
+
   // Used while testing to quickly reset the repository state after changes
   const doTheCleanupBefore = false;
   const doTheCleanupAfter = false;
-  const workspace = (repo) => settings.applications.find(app => app.value === repo).workspace;
-  const mainBranch = (repo) => settings.applications.find(app => app.value === repo).mainBranch;
-  const developmentBranch = (repo) => settings.applications.find(app => app.value === repo).developmentBranch;
+  const workspace = (repo) => settings.applications.find((app) => app.value === repo).workspace;
+  const mainBranch = (repo) => settings.applications.find((app) => app.value === repo).mainBranch;
+  const developmentBranch = (repo) => settings.applications.find((app) => app.value === repo).developmentBranch;
 
-  const { applications, tenants, syncBackToDevelopment,  environment, action, version, yes } = await prompts([
+  const { applications, tenants, syncBackToDevelopment, environment, action, version, yes } = await prompts([
     {
       // TODO: We will deploy one app at a time in the future
       type: 'multiselect',
@@ -75,9 +75,7 @@ async function deployRepository(username, password, settings) {
       message: 'What is the version you want to use?',
       initial: async (prev, values) => {
         console.log(
-          chalk.dim(
-            `› Reading current version from remote repository (${workspace(values.applications[0])}/${values.applications[0]}/package.json)`
-          )
+          chalk.dim(`› Reading current version from remote repository (${workspace(values.applications[0])}/${values.applications[0]}/package.json)`)
         );
         const packageJsonContents = await readFile(
           { workspace: workspace(values.applications[0]), repo: values.applications[0], source: 'master', path: 'package.json' },
@@ -105,7 +103,7 @@ async function deployRepository(username, password, settings) {
 
   if (yes) {
     // const currentBranch = execSync('git branch --show-current').toString();
-    
+
     for (const application of applications) {
       if (doTheCleanupBefore) {
         await doTheCleanup(workspace, application, version, username, password, tenants);
@@ -121,7 +119,7 @@ async function deployRepository(username, password, settings) {
           { workspace: workspace(application), repo: application, source: mainBranch(application), name: 'release/' + version },
           { username, password }
         );
-  
+
         // TODO: Check if the branch already exists and do one of the following
         //  1. Skip this step completely (preferred method)
         //  2. Delete existing branch and recreate from scratch
@@ -165,7 +163,7 @@ async function deployRepository(username, password, settings) {
         // If we are creating a new release branch we need to pull in the latest changes from development
         if (action === 'new-release-branch') {
           // TODO: Check if the branch is already up to date and skip this step completely
-          
+
           // ## Open a PR and merge all changes from development
           const pullRequest = await createPullRequest(
             {
@@ -210,7 +208,7 @@ async function deployRepository(username, password, settings) {
             // TODO: Check if the branch already exists and do one of the following
             //  1. Skip this step completely (preferred method)
             //  2. Delete existing branch and recreate from scratch
-            
+
             const commitData = {
               workspace: workspace(application),
               repo: application,
@@ -225,9 +223,7 @@ async function deployRepository(username, password, settings) {
               { username, password }
             );
             if (netlifyTomlContents) {
-              console.log(
-                chalk.dim(`  › Updating release version from ${currentVersion} to ${version}-${tenant} in netlify.toml`)
-              );
+              console.log(chalk.dim(`  › Updating release version from ${currentVersion} to ${version}-${tenant} in netlify.toml`));
               commitData.files.push({
                 path: 'netlify.toml',
                 contents: netlifyTomlContents.replace(currentVersion, `${version}-${tenant}`),
@@ -248,74 +244,71 @@ async function deployRepository(username, password, settings) {
           }
         }
       }
-      
-      if(action === 'deploy-to-production') {
+
+      if (action === 'deploy-to-production') {
         console.log(chalk.magenta(`\n› Releasing version ${version} to production on ${application}`));
         console.log(chalk.gray(`--------------------------------------------------------`));
-  
+
         // TODO: Check if the branch is already up to date and skip this step completely
-        
+
         // ## Open a PR and merge all changes from release branch
         const pullRequest = await createPullRequest(
-            {
-              workspace: workspace(application),
-              repo: application,
-              source: 'release/' + version,
-              destination: mainBranch(application),
-              title: 'v' + version + ' Release',
-            },
-            { username, password }
+          {
+            workspace: workspace(application),
+            repo: application,
+            source: 'release/' + version,
+            destination: mainBranch(application),
+            title: 'v' + version + ' Release',
+          },
+          { username, password }
         );
-  
+
         if (pullRequest) {
           await approvePullRequest(
-              { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
-              { username, password }
+            { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
+            { username, password }
           );
           const mergedPullRequest = await mergePullRequest(
-              { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
-              { username, password }
+            { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
+            { username, password }
           );
-          
+
           // ## Create a version tag on the merge commit
-          await createTag(
-              { workspace: workspace(application), repo: application, hash: mergedPullRequest.hash, name: version },
-              { username, password }
-          );
-          
-          if(syncBackToDevelopment) {
+          await createTag({ workspace: workspace(application), repo: application, hash: mergedPullRequest.hash, name: version }, { username, password });
+
+          if (syncBackToDevelopment) {
             console.log(chalk.magenta(`\n› Syncing version ${version} back to ${developmentBranch(application)} on ${application}`));
             console.log(chalk.gray(`--------------------------------------------------------`));
-  
+
             // TODO: Check if the branch is already up to date and skip this step completely
-            
+
             // ## Open a PR and merge all changes from master branch
             const pullRequest = await createPullRequest(
-                {
-                  workspace: workspace(application),
-                  repo: application,
-                  source: mainBranch(application),
-                  destination: developmentBranch(application),
-                  title: 'v' + version + ' Post release sync',
-                },
-                { username, password }
+              {
+                workspace: workspace(application),
+                repo: application,
+                source: mainBranch(application),
+                destination: developmentBranch(application),
+                title: 'v' + version + ' Post release sync',
+              },
+              { username, password }
             );
-  
+
             if (pullRequest) {
               // TODO: This might be converted to a helper method, ie. approveAndMergePullRequest(pullRequest, application)
               await approvePullRequest(
-                  { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
-                  { username, password }
+                { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
+                { username, password }
               );
               await mergePullRequest(
-                  { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
-                  { username, password }
+                { id: pullRequest.id, workspace: workspace(application), repo: application, title: pullRequest.title },
+                { username, password }
               );
             }
           }
         }
       }
-  
+
       if (doTheCleanupAfter) {
         await doTheCleanup(workspace, application, version, username, password, tenants);
       }
@@ -326,7 +319,7 @@ async function deployRepository(username, password, settings) {
 }
 
 const settings = await validateDeploySettings();
-if(settings) {
+if (settings) {
   const { username, password } = await connectBitbucket();
   deployRepository(username, password, settings).then();
 }
@@ -334,14 +327,8 @@ if(settings) {
 async function doTheCleanup(workspace, application, version, username, password, tenants) {
   console.log(chalk.magenta(`\n› Cleaning up by removing temporary branches`));
   console.log(chalk.gray(`--------------------------------------------------------`));
-  await deleteBranch(
-      {workspace: workspace(application), repo: application, name: 'release/' + version},
-      {username, password}
-  );
+  await deleteBranch({ workspace: workspace(application), repo: application, name: 'release/' + version }, { username, password });
   for (const tenant of tenants) {
-    await deleteBranch(
-        {workspace: workspace(application), repo: application, name: 'release/' + version + '-' + tenant},
-        {username, password}
-    );
+    await deleteBranch({ workspace: workspace(application), repo: application, name: 'release/' + version + '-' + tenant }, { username, password });
   }
 }
