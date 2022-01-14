@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { readFile } from './read-file';
 import { DeploySettings } from '../models/deploy-settings.model';
 
-export async function validateDeploySettings(): Promise<DeploySettings | boolean> {
+export async function validateDeploySettings(): Promise<DeploySettings | false> {
   console.log(chalk.yellow('Settings | Validating deployrc.json file...'));
 
   try {

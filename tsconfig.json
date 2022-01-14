@@ -3,7 +3,7 @@
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
-    "target": "es2020",
+    "target": "es2021",
     "module": "commonjs",
     "resolveJsonModule": true,
     "declaration": false,
