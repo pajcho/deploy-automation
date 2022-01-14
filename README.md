@@ -38,7 +38,11 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 
 #### Code improvements
 
-- [ ] Switch prompts to https://github.com/SBoudrias/Inquirer.js
+- [x] Add linters (ESLint and Prettier)
 - [ ] Migrate to Typescript
-- [ ] Group functions into classes
+  - [ ] Extract models and types
+  - [ ] Extract common operations into helpers
+  - [ ] Group functions into classes
+- [ ] Switch prompts to [Inquirer](https://github.com/SBoudrias/Inquirer.js)
+- [ ] Add [Ora](https://www.npmjs.com/package/ora) to display loading states
 - [ ] Write tests
