@@ -1,8 +1,6 @@
 import prompts from 'prompts';
 import chalk from 'chalk';
 
-import { validateDeploySettings } from './helpers/validate-deploy-settings';
-import { connectBitbucket } from './bitbucket/connect-bitbucket';
 import { createBranch } from './bitbucket/create-branch';
 import { readFile } from './bitbucket/read-file';
 import { commitChanges } from './bitbucket/commit-changes';
@@ -13,6 +11,7 @@ import { mergePullRequest } from './bitbucket/merge-pull-request';
 import { createTag } from './bitbucket/create-tag';
 import { DeploySettings } from './models/deploy-settings.model';
 import { CommitData } from './models/bitbucket.model';
+import { validateDeploySettings } from './settings/validate-deploy-settings';
 
 async function deployRepository(username: string, password: string, settings: DeploySettings) {
   let currentVersion = '';
@@ -325,10 +324,9 @@ async function deployRepository(username: string, password: string, settings: De
 }
 
 async function deploy() {
-  // TODO: Update validation to accept user input for missing props and always return a valid deployment settings document
   const settings = await validateDeploySettings();
 
-  if (settings && (await connectBitbucket())) {
+  if (settings) {
     const username = settings.connections?.bitbucket?.username || '';
     const password = settings.connections?.bitbucket?.password || '';
 

@@ -29,7 +29,8 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 #### Functional improvements
 
 - [ ] Better deployment settings validation
-  - [ ] When something is missing ask user to fill in the details and persist in the `.deployrc.json` file
+  - [x] When something is missing ask user to fill in the details and persist in the `.deployrc.json` file
+  - [ ] Create a DeploymentSettings class that can auto-validate itself and has helper methods for connections, applications and tenants
 - [ ] Better branch creation
   - [ ] Detect is branch we are trying to create exists and either skip the step or recreate the branch from scratch
   - [ ] Sync branches only when needed _(When running same commands again and again, only sync branches if there are new changes, skip otherwise)_

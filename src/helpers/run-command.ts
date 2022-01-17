@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import { execSync } from 'node:child_process';
 
-export function runCommand(command: string): void {
-  console.log(chalk.blue(`› Running command: ${command}`));
+export function runCommand(command: string, log = true): void {
+  if (log) console.log(chalk.blue(`› Running command: ${command}`));
+
   const result = execSync(command, { stdio: 'pipe' })
     .toString()
     .split('\n')
@@ -10,7 +11,7 @@ export function runCommand(command: string): void {
     .join('\n');
 
   // We have 4 space characters so, if exists, result must be longer
-  if (result.length > 4) {
+  if (log && result.length > 4) {
     console.log(chalk.dim(result));
   }
 }
