@@ -28,16 +28,18 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 
 #### Functional improvements
 
-- [ ] Better deployment settings validation
+- Better deployment settings validation
   - [x] When something is missing ask user to fill in the details and persist in the `.deployrc.json` file
   - [ ] Create a DeploymentSettings class that can auto-validate itself and has helper methods for connections, applications and tenants
-- [ ] Better branch creation
+- Better branch creation
   - [ ] Detect is branch we are trying to create exists and either skip the step or recreate the branch from scratch
   - [ ] Sync branches only when needed _(When running same commands again and again, only sync branches if there are new changes, skip otherwise)_
-- [ ] Better version suggestions
+- Better version suggestions
   - [ ] Fetch version files directly from release branch _(When creating tenant branches, instead of re-fetching version files (Netlify.toml and package.json) from master branch, fetch version from the release branch and do search and replace)_
   - [ ] When creating new release branch, try to suggest multiple versions for user to choose from instead of typing one
   - [ ] When doing the release to production or sync tenant branches try to get the latest release branches and their versions
+- Deploy multiple applications at once
+  - [ ] Each application should have a separate version check (currently its one version per deployment)
 
 #### Code improvements
 
