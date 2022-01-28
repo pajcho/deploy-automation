@@ -2,6 +2,8 @@
 
 Set of commands to allow for easy and automated project deployments using Bitbucket APIs
 
+This is a small CLI app we use internally at DIB so that we can have consistent deployments
+
 # Features
 
 #### Staging
@@ -28,6 +30,9 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 
 #### Functional improvements
 
+- Create test branches alongside the release branches (ie. `test/14.0.0`)
+  - [ ] Optional question only if we are doing new release or hotfix
+  - [ ] Option to choose tenants to deploy test branch for
 - Better deployment settings validation
   - [x] When something is missing ask user to fill in the details and persist in the `.deployrc.json` file
   - [ ] Create a DeploymentSettings class that can auto-validate itself and has helper methods for connections, applications and tenants
