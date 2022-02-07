@@ -1,4 +1,5 @@
 export interface AppVersion {
-  title: string;
+  name: string;
+  short?: string;
   value?: string;
 }

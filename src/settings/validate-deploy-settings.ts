@@ -6,7 +6,7 @@ import { askForBitbucketConnectionSettings } from './ask-for-bitbucket-connectio
 import { askForApplicationSettings } from './ask-for-application-settings';
 import { askForTenantSettings } from './ask-for-tenant-settings';
 
-export async function validateDeploySettings(): Promise<DeploySettings | false> {
+export async function validateDeploySettings(): Promise<DeploySettings> {
   let settings: DeploySettings;
   let settingsUpdated = false;
 
@@ -15,21 +15,21 @@ export async function validateDeploySettings(): Promise<DeploySettings | false> 
   try {
     settings = JSON.parse(readFile('.deployrc.json', false));
 
-    if (!settings.connections?.bitbucket) {
+    if (!settings.connections.bitbucket) {
       console.log(chalk.red(`  ✖ Unable to find bitbucket connection settings in .deployrc.json file! Follow the interactive guide and fill in the settings.`));
 
       settings.connections = { ...settings.connections, ...(await askForBitbucketConnectionSettings()) };
       settingsUpdated = true;
     }
 
-    if (!settings.applications?.length) {
+    if (!settings.applications.length) {
       console.log(chalk.red(`  ✖ Unable to find applications list in .deployrc.json file! Follow the interactive guide and fill in the settings.`));
 
       settings.applications = await askForApplicationSettings();
       settingsUpdated = true;
     }
 
-    if (!settings.tenants?.length) {
+    if (!settings.tenants.length) {
       console.log(chalk.red(`  ✖ Unable to find tenants list in .deployrc.json file! Follow the interactive guide and fill in the settings.`));
 
       settings.tenants = await askForTenantSettings();

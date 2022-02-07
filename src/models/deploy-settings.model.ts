@@ -17,9 +17,9 @@ export interface DeployConnection {
 }
 
 export interface DeploySettings {
-  connections?: {
-    bitbucket?: DeployConnection;
+  connections: {
+    bitbucket: DeployConnection;
   };
-  applications?: DeployApplication[];
-  tenants?: DeployTenant[];
+  applications: DeployApplication[];
+  tenants: DeployTenant[];
 }

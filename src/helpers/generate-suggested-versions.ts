@@ -1,5 +1,4 @@
 import { AppVersion } from '../models/app-version.model';
-import { version as currentVersion } from '../../package.json';
 
 /**
  * TODO: Not used right now but can be useful in the future
@@ -7,7 +6,7 @@ import { version as currentVersion } from '../../package.json';
  * It starts form one version and generates 2 hotfix versions + 1 minor version + 1 major version
  * ie. 13.2.5 -> [13.2.6, 13.2.7, 13.3.0, 14.0.0]
  */
-export function generateSuggestedVersions(): AppVersion[] {
+export function generateSuggestedVersions(currentVersion: string, isHotfix = false): AppVersion[] {
   const nextHotfixVersion: string = currentVersion
     .split('.')
     .map((number, index) => {
@@ -47,11 +46,9 @@ export function generateSuggestedVersions(): AppVersion[] {
     })
     .join('.');
 
-  return [
-    { title: `${currentVersion} (current)`, value: currentVersion },
-    { title: nextHotfixVersion },
-    { title: secondNextHotfixVersion },
-    { title: nextMinorVersion },
-    { title: nextMajorVersion },
-  ];
+  if (isHotfix) {
+    return [{ name: `${currentVersion} (current)`, value: currentVersion }, { name: nextHotfixVersion }, { name: secondNextHotfixVersion }];
+  }
+
+  return [{ name: `${currentVersion} (current)`, value: currentVersion }, { name: nextMinorVersion }, { name: nextMajorVersion }];
 }

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "deploy": "yarn build && node dist/src/deploy.js",
+    "deploy": "yarn build && node dist/deploy.js",
     "lint": "yarn eslint && yarn prettier",
     "eslint": "eslint src --ext js,ts --fix",
     "prettier:check": "prettier --check .",

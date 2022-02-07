@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import inquirer, { Answers } from 'inquirer';
 import { DeployConnection } from '../models/deploy-settings.model';
 
-export async function askForBitbucketConnectionSettings(): Promise<Record<string, DeployConnection>> {
+export async function askForBitbucketConnectionSettings(): Promise<{ bitbucket: DeployConnection }> {
   console.log(chalk.yellow('Settings | Setting up Bitbucket credentials...'));
 
   return inquirer

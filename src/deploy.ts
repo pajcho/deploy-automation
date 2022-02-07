@@ -13,21 +13,22 @@ import { DeploySettings } from './models/deploy-settings.model';
 import { CommitData } from './models/bitbucket.model';
 import { validateDeploySettings } from './settings/validate-deploy-settings';
 
-async function deployRepository(username: string, password: string, settings: DeploySettings) {
+async function deployRepository(settings: DeploySettings) {
   let currentVersion = '';
 
   // Used while testing to quickly reset the repository state after changes
   const doTheCleanupBefore = false;
   const doTheCleanupAfter = false;
-  const workspace = (repo: string): string => settings.applications?.find((app) => app.value === repo)?.workspace || '';
-  const mainBranch = (repo: string): string => settings.applications?.find((app) => app.value === repo)?.mainBranch || '';
-  const developmentBranch = (repo: string): string => settings.applications?.find((app) => app.value === repo)?.developmentBranch || '';
+
+  const { username, password } = settings.connections.bitbucket;
+  const workspace = (repo: string): string => settings.applications.find((app) => app.value === repo)?.workspace || '';
+  const mainBranch = (repo: string): string => settings.applications.find((app) => app.value === repo)?.mainBranch || '';
+  const developmentBranch = (repo: string): string => settings.applications.find((app) => app.value === repo)?.developmentBranch || '';
 
   const { applications, tenants, syncBackToDevelopment, action, version, yes } = await prompts<
     'applications' | 'tenants' | 'syncBackToDevelopment' | 'environment' | 'action' | 'version' | 'yes'
   >([
     {
-      // TODO: We will deploy one app at a time in the future
       type: 'multiselect',
       name: 'applications',
       message: 'Pick applications you want to deploy',
@@ -326,12 +327,9 @@ async function deployRepository(username: string, password: string, settings: De
 async function deploy() {
   const settings = await validateDeploySettings();
 
-  if (settings) {
-    const username = settings.connections?.bitbucket?.username || '';
-    const password = settings.connections?.bitbucket?.password || '';
+  // askDeploymentQuestions(settings).then();
 
-    deployRepository(username, password, settings).then();
-  }
+  deployRepository(settings).then();
 }
 
 async function doTheCleanup(workspace: (repo: string) => string, application: string, version: string, username: string, password: string, tenants: string[]) {
