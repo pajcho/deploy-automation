@@ -8,6 +8,7 @@ import { BranchResponse } from './models/bitbucket.model';
 
 export async function askDeploymentQuestions(settings: DeploySettings) {
   const workspace = (repo: string): string => settings.applications.find((app) => app.value === repo)?.workspace || '';
+  const mainBranch = (repo: string): string => settings.applications.find((app) => app.value === repo)?.mainBranch || '';
   const { username, password } = settings.connections.bitbucket;
 
   const answers: any = await inquirer.prompt([
@@ -71,7 +72,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
           {
             workspace: workspace(answers.applications[0]),
             repo: answers.applications[0],
-            source: 'master',
+            source: mainBranch(answers.applications[0]),
             path: 'package.json',
           },
           { username, password },
@@ -89,7 +90,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
     // Production specific
     {
       type: 'confirm',
-      name: 'tenants',
+      name: 'syncBackToDevelopment',
       message: 'Sync back to development?',
       when: (answers) => answers.environment === 'production',
     },
@@ -108,7 +109,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
               repo: answers.applications[0],
               source: '',
               name: '',
-              query: `name ~ "release123/" AND name !~ "-"`,
+              query: `name ~ "release/" AND name !~ "-"`,
             },
             { username, password }
           );
@@ -118,6 +119,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
           return [{ name: `${error.message} Press ENTER to exit.`, value: 'exit' }];
         }
       },
+      loop: false,
     },
     {
       type: 'confirm',

@@ -53,6 +53,6 @@ This is a small CLI app we use internally at DIB so that we can have consistent 
   - [x] Extract models and types
   - [ ] Extract common operations into helpers
   - [ ] Group functions into classes
-- [ ] Switch prompts to [Inquirer](https://github.com/SBoudrias/Inquirer.js)
+- [x] Switch prompts to [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 - [ ] Add [Ora](https://www.npmjs.com/package/ora) to display loading states
 - [ ] Write tests
