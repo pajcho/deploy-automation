@@ -33,6 +33,8 @@ export async function askForTenantSettings(): Promise<DeployTenant[]> {
           type: 'input',
           name: 'value',
           message: 'Enter tenant slug:',
+          // Convert title to lower-kebab-case (Tenant Title -> tenant-title)
+          default: ({ title }: { title: string }) => title.split(' ').join('-').toLowerCase(),
           validate(value: string) {
             return !/.+/.test(value) ? 'Tenant slug is required' : true;
           },

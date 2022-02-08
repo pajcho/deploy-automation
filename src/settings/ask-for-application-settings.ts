@@ -41,6 +41,7 @@ export async function askForApplicationSettings(): Promise<DeployApplication[]> 
           type: 'input',
           name: 'mainBranch',
           message: 'Enter application main branch name:',
+          default: 'main',
           validate(value: string) {
             return !/.+/.test(value) ? 'Main branch name is required' : true;
           },
@@ -50,6 +51,7 @@ export async function askForApplicationSettings(): Promise<DeployApplication[]> 
           type: 'input',
           name: 'developmentBranch',
           message: 'Enter application development branch name:',
+          default: 'develop',
           validate(value: string) {
             return !/.+/.test(value) ? 'Development branch name is required' : true;
           },
