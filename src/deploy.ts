@@ -15,8 +15,6 @@ import { doTheCleanup } from './do-the-cleanup';
 async function deployRepository(answers: any, settings: DeploySettings) {
   if (!answers.ready) return;
 
-  const currentVersion = '';
-
   // Used while testing to quickly reset the repository state after changes
   const doTheCleanupBefore = false;
   const doTheCleanupAfter = false;
@@ -62,10 +60,10 @@ async function deployRepository(answers: any, settings: DeploySettings) {
         { username, password }
       );
       if (packageJsonContents) {
-        console.log(chalk.dim(`  › Updating release version from ${currentVersion} to ${answers.version} in package.json`));
+        console.log(chalk.dim(`  › Updating release version from ${answers.currentVersion} to ${answers.version} in package.json`));
         commitData.files.push({
           path: 'package.json',
-          contents: `${JSON.stringify(packageJsonContents, null, 2)}\n`.replace(currentVersion, answers.version),
+          contents: `${JSON.stringify(packageJsonContents, null, 2)}\n`.replace(answers.currentVersion, answers.version),
         });
       }
       // - Update netlify.toml
@@ -74,10 +72,10 @@ async function deployRepository(answers: any, settings: DeploySettings) {
         { username, password }
       );
       if (netlifyTomlContents) {
-        console.log(chalk.dim(`  › Updating release version from ${currentVersion} to ${answers.version} in netlify.toml`));
+        console.log(chalk.dim(`  › Updating release version from ${answers.currentVersion} to ${answers.version} in netlify.toml`));
         commitData.files.push({
           path: 'netlify.toml',
-          contents: netlifyTomlContents.replace(currentVersion, answers.version),
+          contents: netlifyTomlContents.replace(answers.currentVersion, answers.version),
         });
       }
 
@@ -147,10 +145,10 @@ async function deployRepository(answers: any, settings: DeploySettings) {
             { username, password }
           );
           if (netlifyTomlContents) {
-            console.log(chalk.dim(`  › Updating release version from ${currentVersion} to ${answers.version}-${tenant} in netlify.toml`));
+            console.log(chalk.dim(`  › Updating release version from ${answers.currentVersion} to ${answers.version}-${tenant} in netlify.toml`));
             commitData.files.push({
               path: 'netlify.toml',
-              contents: netlifyTomlContents.replace(currentVersion, `${answers.version}-${tenant}`),
+              contents: netlifyTomlContents.replace(answers.currentVersion, `${answers.version}-${tenant}`),
             });
           }
 

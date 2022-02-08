@@ -7,6 +7,8 @@ import { listBranches } from './bitbucket/list-branches';
 import { BranchResponse } from './models/bitbucket.model';
 
 export async function askDeploymentQuestions(settings: DeploySettings) {
+  let currentVersion = '';
+
   const workspace = (repo: string): string => settings.applications.find((app) => app.value === repo)?.workspace || '';
   const mainBranch = (repo: string): string => settings.applications.find((app) => app.value === repo)?.mainBranch || '';
   const { username, password } = settings.connections.bitbucket;
@@ -79,6 +81,8 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
           false
         );
         if (packageJsonContents) {
+          currentVersion = packageJsonContents.version;
+
           return generateSuggestedVersions(packageJsonContents.version, answers.action === 'new-hotfix-branch');
         }
 
@@ -129,7 +133,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
     },
   ]);
 
-  console.log(answers);
+  console.log({ ...answers, currentVersion });
 
-  return answers;
+  return { ...answers, currentVersion };
 }

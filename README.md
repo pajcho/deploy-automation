@@ -41,8 +41,8 @@ This is a small CLI app we use internally at DIB so that we can have consistent 
   - [ ] Sync branches only when needed _(When running same commands again and again, only sync branches if there are new changes, skip otherwise)_
 - Better version suggestions
   - [ ] Fetch version files directly from release branch _(When creating tenant branches, instead of re-fetching version files (Netlify.toml and package.json) from master branch, fetch version from the release branch and do search and replace)_
-  - [ ] When creating new release branch, try to suggest multiple versions for user to choose from instead of typing one
-  - [ ] When doing the release to production or sync tenant branches try to get the latest release branches and their versions
+  - [x] When creating new release branch, try to suggest multiple versions for user to choose from instead of typing one
+  - [x] When doing the release to production or sync tenant branches try to get the latest release branches and their versions
 - Deploy multiple applications at once
   - [ ] Each application should have a separate version check (currently its one version per deployment)
 
