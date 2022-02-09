@@ -1,10 +1,10 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { DeploySettings } from './models/deploy-settings.model';
-import { readFile } from './bitbucket/read-file';
-import { generateSuggestedVersions } from './helpers/generate-suggested-versions';
-import { listBranches } from './bitbucket/list-branches';
-import { BranchResponse } from './models/bitbucket.model';
+import { DeploySettings } from '../models/deploy-settings.model';
+import { readFile } from '../bitbucket/read-file';
+import { generateSuggestedVersions } from '../helpers/generate-suggested-versions';
+import { listBranches } from '../bitbucket/list-branches';
+import { BranchResponse } from '../models/bitbucket.model';
 
 export async function askDeploymentQuestions(settings: DeploySettings) {
   let currentVersion = '';
@@ -28,8 +28,8 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
       name: 'environment',
       message: 'Where do you want your action to take place?',
       choices: [
-        { name: 'Staging (create or sync release branches)', value: 'staging', key: 's' },
-        { name: 'Production (release a version to production)', value: 'production', key: 'p' },
+        { name: 'Staging (create or sync release branches)', value: 'staging' },
+        { name: 'Production (release a version to production)', value: 'production' },
       ],
     },
 
