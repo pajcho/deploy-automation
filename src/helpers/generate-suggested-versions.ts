@@ -1,10 +1,11 @@
 import { AppVersion } from '../models/app-version.model';
 
 /**
- * TODO: Not used right now but can be useful in the future
+ * Depending on if we are doing a hotfix or a regular release, this
+ * method creates the array of suggested versions to pick from
  *
- * It starts form one version and generates 2 hotfix versions + 1 minor version + 1 major version
- * ie. 13.2.5 -> [13.2.6, 13.2.7, 13.3.0, 14.0.0]
+ * i.e. Hotfix from 13.2.5 -> [13.2.6, 13.2.7, 13.2.8, 13.2.9]
+ * i.e. Release from 13.2.5 -> [13.3.0, 13.4.0, 13.5.0, 14.0.0, 15.0.0]
  */
 export function generateSuggestedVersions(currentVersion: string, isHotfix = false): AppVersion[] {
   if (isHotfix) {
