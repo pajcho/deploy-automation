@@ -1,12 +1,7 @@
 import chalk from 'chalk';
 import { validateDeploySettings } from './settings/validate-deploy-settings';
 import { askDeploymentQuestions } from './deploy/ask-deployment-questions';
-import { doTheCleanup } from './deploy/do-the-cleanup';
-import { mergeDevelopmentIntoRelease } from './deploy/merge-development-into-release';
-import { syncTenantReleaseBranch } from './deploy/sync-tenant-release-branch';
-import { createTenantReleaseBranch } from './deploy/create-tenant-release-branch';
-import { releaseToProduction } from './deploy/release-to-production';
-import { createReleaseBranch } from './deploy/create-release-branch';
+import { Deployment } from './deployment/deployment';
 
 async function deploy() {
   const settings = await validateDeploySettings();
@@ -14,37 +9,36 @@ async function deploy() {
 
   if (!answers.ready) return;
 
-  // Used while testing to quickly reset the repository state after changes
-  const doTheCleanupBefore = false;
-  const doTheCleanupAfter = false;
+  const deployment = new Deployment(settings, answers);
+  deployment.clean.shouldCleanAfter = false;
 
   for (const application of answers.applications) {
-    if (doTheCleanupBefore) await doTheCleanup(answers, application, settings);
+    await deployment.clean.before(application);
 
     if (answers.environment === 'staging') {
       if (['new-release-branch', 'new-hotfix-branch'].includes(answers.action)) {
-        await createReleaseBranch(answers, application, settings);
+        await deployment.createReleaseBranch(application);
 
         // If we are creating a new release branch we need to pull in the latest changes from development
         if (answers.action === 'new-release-branch') {
-          await mergeDevelopmentIntoRelease(answers, application, settings);
+          await deployment.mergeDevelopmentIntoRelease(application);
         }
       }
 
       for (const tenant of answers.tenants || []) {
         if (['new-release-branch', 'new-hotfix-branch'].includes(answers.action)) {
-          await createTenantReleaseBranch(tenant, answers, application, settings);
+          await deployment.createTenantReleaseBranch(tenant, application);
         } else if (answers.action === 'sync-with-existing-release') {
-          await syncTenantReleaseBranch(tenant, answers, application, settings);
+          await deployment.syncTenantReleaseBranch(tenant, application);
         }
       }
     }
 
     if (answers.environment === 'production') {
-      await releaseToProduction(answers, application, settings);
+      await deployment.releaseToProduction(application);
     }
 
-    if (doTheCleanupAfter) await doTheCleanup(answers, application, settings);
+    await deployment.clean.after(application);
   }
 
   console.log(chalk.green(`\n✔ All applications are deployed!!\n\n`));

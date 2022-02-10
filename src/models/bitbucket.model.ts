@@ -42,7 +42,7 @@ export interface ApprovePullRequestResponse {
 export interface BranchResponse {
   name: string;
   link: string;
-  data: Record<string, string>;
+  data: Record<string, any>;
 }
 
 export interface BranchData {
@@ -55,7 +55,7 @@ export interface BranchData {
 export interface TagResponse {
   name: string;
   link: string;
-  data: Record<string, string>;
+  data: Record<string, any>;
 }
 
 export interface TagData {

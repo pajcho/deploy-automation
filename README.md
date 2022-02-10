@@ -35,12 +35,12 @@ This is a small CLI app we use internally at DIB so that we can have consistent 
   - [ ] Option to choose tenants to deploy test branch for
 - Better deployment settings validation
   - [x] When something is missing ask user to fill in the details and persist in the `.deployrc.json` file
-  - [ ] Create a DeploymentSettings class that can auto-validate itself and has helper methods for connections, applications and tenants
+  - [x] Create a DeploymentSettings class that can auto-validate itself and has helper methods for connections, applications and tenants
 - Better branch creation
   - [ ] Detect is branch we are trying to create exists and either skip the step or recreate the branch from scratch
   - [ ] Sync branches only when needed _(When running same commands again and again, only sync branches if there are new changes, skip otherwise)_
 - Better version suggestions
-  - [ ] Fetch version files directly from release branch _(When creating tenant branches, instead of re-fetching version files (Netlify.toml and package.json) from master branch, fetch version from the release branch and do search and replace)_
+  - [x] Fetch version files directly from release branch _(When creating tenant branches, instead of re-fetching version files (Netlify.toml and package.json) from master branch, fetch version from the release branch and do search and replace)_
   - [x] When creating new release branch, try to suggest multiple versions for user to choose from instead of typing one
   - [x] When doing the release to production or sync tenant branches try to get the latest release branches and their versions
 - Deploy multiple applications at once
@@ -51,7 +51,7 @@ This is a small CLI app we use internally at DIB so that we can have consistent 
 - [x] Add linters (ESLint and Prettier)
 - [x] Migrate to Typescript
   - [x] Extract models and types
-  - [ ] Extract common operations into helpers
+  - [x] Extract common operations into helpers
   - [ ] Group functions into classes
 - [x] Switch prompts to [Inquirer](https://github.com/SBoudrias/Inquirer.js)
 - [ ] Add [Ora](https://www.npmjs.com/package/ora) to display loading states

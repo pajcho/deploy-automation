@@ -42,7 +42,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
         { name: 'Create release branch (from master synced with development)', value: 'new-release-branch' },
         { name: 'Create hotfix branch (from master)', value: 'new-hotfix-branch' },
         {
-          name: 'Sync tenant branches with existing release branch (not working!!)',
+          name: 'Sync tenant branches with existing release branch',
           value: 'sync-with-existing-release',
         },
       ],
@@ -63,6 +63,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
       validate(values) {
         return values.length < 1 ? 'Select at least one tenant from the list' : true;
       },
+      loop: false,
     },
     {
       type: 'list',
