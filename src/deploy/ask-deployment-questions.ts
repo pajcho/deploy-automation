@@ -134,7 +134,5 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
     },
   ]);
 
-  console.log({ ...answers, currentVersion });
-
   return { ...answers, currentVersion };
 }
