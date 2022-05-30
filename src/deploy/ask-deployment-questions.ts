@@ -68,7 +68,7 @@ export async function askDeploymentQuestions(settings: DeploySettings) {
     {
       type: 'list',
       name: 'version',
-      message: 'What is the version you want to use?',
+      message: 'What is the new version you want to release?',
       when: (answers) => ['new-release-branch', 'new-hotfix-branch'].includes(answers.action),
       choices: async (answers) => {
         const packageJsonContents = await readFile(
