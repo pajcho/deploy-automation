@@ -4,6 +4,9 @@ Set of commands to allow for easy and automated project deployments using Bitbuc
 
 This is a small CLI app we use internally at DIB so that we can have consistent deployments
 
+# Demo recording
+![deploy-automation](https://github.com/pajcho/deploy-automation/assets/2182745/fbcaf41b-09c1-47fb-bfa5-ed59ec642b97)
+
 # Features
 
 #### Staging
